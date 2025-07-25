@@ -17,7 +17,7 @@ exports.createArticle = async ({ title, content, author }) => {
       data: article,
     };
   } catch (error) {
-    console.error("Erreur dans createArticle:", error.message);
+    console.error("Erreur dans createArticle :", error.message);
     throw new Error("Impossible de créer l'article");
   }
 };
@@ -28,7 +28,7 @@ exports.getArticles = async () => {
     return { success: true, articles };
   } catch (error) {
     console.error(
-      "Erreur lors de la récupération des articles:",
+      "Erreur lors de la récupération des articles :",
       error.message
     );
     throw new Error("Impossible de récupérer les articles");
@@ -41,7 +41,21 @@ exports.getArticleById = async ({ id }) => {
     return { success: true, article };
   } catch (error) {
     console.error(
-      "Erreur lors de la récupération des articles:",
+      "Erreur lors de la récupération de l'article :",
+      error.message
+    );
+    throw new Error("Erreur lors de la récupération de l'article");
+  }
+};
+
+exports.deleteArticleById = async ({ id }) => {
+  try {
+    const result = await Article.deleteOne({ _id: id });
+    if (result.deletedCount === 0) throw new Error("Tâche introuvable");
+    return { success: true, message: "Tâche supprimée avec succès" };
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression de l'article :",
       error.message
     );
     throw new Error("Erreur lors de la récupération de l'article");

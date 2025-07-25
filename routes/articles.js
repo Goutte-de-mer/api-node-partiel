@@ -4,6 +4,7 @@ const {
   createArticle,
   getArticles,
   getArticleById,
+  deleteArticleById,
 } = require("../controllers/articleController");
 const {
   newArticleValidations,
@@ -44,6 +45,18 @@ router.get("/:id", async (req, res) => {
   try {
     const result = await getArticleById(req.params);
     res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const result = await deleteArticleById(req.params);
+    return res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
       success: false,
