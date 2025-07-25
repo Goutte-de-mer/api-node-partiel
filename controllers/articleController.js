@@ -17,7 +17,7 @@ exports.createArticle = async ({ title, content, author }) => {
       data: article,
     };
   } catch (error) {
-    console.error("Erreur dans createArticle:", error);
+    console.error("Erreur dans createArticle:", error.message);
     throw new Error("Impossible de créer l'article");
   }
 };
@@ -27,7 +27,23 @@ exports.getArticles = async () => {
     const articles = await Article.find();
     return { success: true, articles };
   } catch (error) {
-    console.error("Erreur lors de la récupération des articles:", error);
+    console.error(
+      "Erreur lors de la récupération des articles:",
+      error.message
+    );
     throw new Error("Impossible de récupérer les articles");
+  }
+};
+
+exports.getArticleById = async ({ id }) => {
+  try {
+    const article = await Article.findById(id);
+    return { success: true, article };
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des articles:",
+      error.message
+    );
+    throw new Error("Erreur lors de la récupération de l'article");
   }
 };

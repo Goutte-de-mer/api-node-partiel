@@ -3,6 +3,7 @@ var router = express.Router();
 const {
   createArticle,
   getArticles,
+  getArticleById,
 } = require("../controllers/articleController");
 const {
   newArticleValidations,
@@ -30,6 +31,18 @@ router.post(
 router.get("/all", async (req, res) => {
   try {
     const result = await getArticles();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const result = await getArticleById(req.params);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
