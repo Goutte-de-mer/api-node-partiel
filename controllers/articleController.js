@@ -13,11 +13,21 @@ exports.createArticle = async ({ title, content, author }) => {
     });
     return {
       success: true,
-      message: "Arctile créé avec succès",
+      message: "Article créé avec succès",
       data: article,
     };
   } catch (error) {
     console.error("Erreur dans createArticle:", error);
     throw new Error("Impossible de créer l'article");
+  }
+};
+
+exports.getArticles = async () => {
+  try {
+    const articles = await Article.find();
+    return { success: true, articles };
+  } catch (error) {
+    console.error("Erreur lors de la récupération des articles:", error);
+    throw new Error("Impossible de récupérer les articles");
   }
 };

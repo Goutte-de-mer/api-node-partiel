@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
-const { createArticle } = require("../controllers/articleController");
+const {
+  createArticle,
+  getArticles,
+} = require("../controllers/articleController");
 const {
   newArticleValidations,
   handleValidationErrors,
@@ -18,10 +21,22 @@ router.post(
       console.error("Erreur lors de la création de l'article:", error);
       res.status(500).json({
         success: false,
-        message: "Erreur lors de la création de l'article",
+        message: error.message,
       });
     }
   }
 );
+
+router.get("/all", async (req, res) => {
+  try {
+    const result = await getArticles();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 module.exports = router;
