@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 
 const newArticleValidations = [
   body("title")
@@ -28,6 +28,16 @@ const newArticleValidations = [
     .withMessage("Le nom de l'auteur doit contenir entre 2 et 100 caractères"),
 ];
 
+const idValidation = [
+  param("id")
+    .notEmpty()
+    .withMessage("L'ID est requis")
+    .isString()
+    .withMessage("L'ID doit être une chaîne de caractères")
+    .isLength({ min: 1 })
+    .withMessage("L'ID ne peut pas être vide"),
+];
+
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -44,4 +54,8 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
-module.exports = { newArticleValidations, handleValidationErrors };
+module.exports = {
+  newArticleValidations,
+  idValidation,
+  handleValidationErrors,
+};

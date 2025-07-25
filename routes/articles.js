@@ -8,6 +8,7 @@ const {
 } = require("../controllers/articleController");
 const {
   newArticleValidations,
+  idValidation,
   handleValidationErrors,
 } = require("../middlewares/articleValidations");
 
@@ -46,23 +47,30 @@ router.get("/:id", async (req, res) => {
     const result = await getArticleById(req.params);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({
+    const status = error.status || 500;
+    res.status(status).json({
       success: false,
       message: error.message,
     });
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    const result = await deleteArticleById(req.params);
-    return res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+router.delete(
+  "/delete/:id",
+  idValidation,
+  handleValidationErrors,
+  async (req, res) => {
+    try {
+      const result = await deleteArticleById(req.params);
+      return res.status(200).json(result);
+    } catch (error) {
+      const status = error.status || 500;
+      res.status(status).json({
+        success: false,
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 module.exports = router;
